@@ -1,0 +1,8 @@
+name: HealthStatus
+description: Shows you're health status above your head.
+
+main:
+version: 1.0.0
+api: 3.2.2
+
+author: ImAstroPvP
