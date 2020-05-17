@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace HealthStatus;
 
-use HealthStatus\Task\HSTask;
+use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
@@ -12,14 +12,19 @@ use pocketmine\utils\Config;
  */
 class Main extends PluginBase {
 
-	public function onEnable(){
-		$this->settings = new Config($this->getDataFolder().'config.yml', Config::YAML);
+
+    private static $instance;
+
+    public function onEnable(){
+        self::$instance = $this;
 		$this->getLogger()->info("HealthStatus is now Enabled!");
-		$this->getScheduler()->scheduleRepeatingTask(new HSTask($this), 20);;
 	}
 
-	public function onDisable(){
-		$this->getLogger()->info("HealthStatus is now disabled");
-		$this->settings->save();
-	}
+    public static function getInstance(): self{
+        return self::$instance;
+    }
+
+	public static function updateHealth(Player $player) {
+	    $player->setScoreTag(str_repeat("§r§a|", $player->getHealth()) . str_repeat("§r§c|", $player->getMaxHealth() - $player->getHealth()));
+    }
 }
